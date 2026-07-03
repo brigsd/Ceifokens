@@ -1,0 +1,12 @@
+# conversas exportadas = dados pessoais, NAO subir
+exports/
+
+# indice gerado
+index/
+
+# cache de modelos e python
+__pycache__/
+*.pyc
+.fastembed_cache/
+.venv/
+venv/
