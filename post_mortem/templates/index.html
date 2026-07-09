@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ceifokens Sanitizador — Antigravity</title>
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      </div>
+      <div>
+        <span class="brand-text">Ceifokens</span>
+        <span class="brand-tag">Sanitizador</span>
+      </div>
+    </div>
+    
+    <div class="status-bar">
+      <div class="status-indicator">
+        <div id="antigravity-status-dot" class="status-dot"></div>
+        <span id="antigravity-status-text">Detectando Antigravity...</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Corpo Principal -->
+  <div class="app-container">
+    
+    <!-- Painel Lateral -->
+    <div class="sidebar">
+      <div class="search-container">
+        <div class="search-wrapper">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="search-input" class="search-input" placeholder="Buscar por ID ou Título...">
+        </div>
+      </div>
+      
+      <div class="convo-list" id="convo-list">
+        <!-- Injetado dinamicamente -->
+      </div>
+    </div>
+
+    <!-- Painel Central -->
+    <div class="main-panel" id="main-panel">
+      <div class="empty-state">
+        <i class="fa-solid fa-seedling empty-icon"></i>
+        <h3 class="empty-title">Nenhuma Conversa Selecionada</h3>
+        <p class="empty-desc">Escolha uma conversa na barra lateral para descriptografar, converter para SQLite aberto (.db) ou realizar a injeção direta de novos contextos.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toasts -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    let activeConvoId = null;
+    let serverRunning = true;
+    let isConverting = false;
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      
+      let icon = 'fa-circle-check';
+      if (type === 'error') icon = 'fa-circle-exclamation';
+      if (type === 'warning') icon = 'fa-triangle-exclamation';
+
+      toast.innerHTML = `
+        <i class="fa-solid ${icon}"></i>
+        <span>${message}</span>
+      `;
+      
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400);
+      }, 4000);
+    }
+
+    // Monitor do Status do Processo Antigravity
+    function checkSystemStatus() {
+      fetch('/api/status')
+        .then(res => res.json())
+        .then(data => {
+          const dot = document.getElementById('antigravity-status-dot');
+          const text = document.getElementById('antigravity-status-text');
+          
+          serverRunning = data.antigravity_running;
+
+          if (data.antigravity_running) {
+            dot.className = 'status-dot active';
+            text.innerText = 'Antigravity Ativo (Servidor Online)';
+          } else {
+            dot.className = 'status-dot inactive';
+            text.innerText = 'Antigravity Fechado (Modo Offline)';
+          }
+        })
+        .catch(err => console.error('Erro ao verificar status:', err));
+    }
+
+    // Carrega a Lista de Conversas
+    function loadConversations() {
+      fetch('/api/conversations')
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            showToast('Falha ao carregar conversas.', 'error');
+            return;
+          }
+          
+          const list = document.getElementById('convo-list');
+          const query = document.getElementById('search-input').value.toLowerCase();
+          
+          list.innerHTML = '';
+          
+          const filtered = data.conversations.filter(c => 
+            c.id.toLowerCase().includes(query) || 
+            c.title.toLowerCase().includes(query)
+          );
+
+          if (filtered.length === 0) {
+            list.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 20px;">Nenhuma conversa encontrada.</div>';
+            return;
+          }
+
+          filtered.forEach(convo => {
+            const card = document.createElement('div');
+            card.className = `convo-card ${convo.id === activeConvoId ? 'active' : ''}`;
+            card.onclick = () => selectConversation(convo.id, convo.title, convo.status);
+            
+            let badgeClass = 'badge-mem';
+            if (convo.status === 'SQLite Aberto') badgeClass = 'badge-db';
+            if (convo.status === 'Criptografado (.pb)') badgeClass = 'badge-pb';
+
+            card.innerHTML = `
+              <div class="convo-title">${convo.title}</div>
+              <div class="convo-meta">
+                <span>${convo.id.slice(0, 8)}...</span>
+                <span class="convo-badge ${badgeClass}">${convo.status}</span>
+              </div>
+            `;
+            list.appendChild(card);
+          });
+        })
+        .catch(err => console.error(err));
+    }
+
+    // Seleciona uma Conversa
+    function selectConversation(id, title, status) {
+      activeConvoId = id;
+      
+      // Atualiza estado ativo na barra lateral
+      document.querySelectorAll('.convo-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      loadConversations(); // recarrega lista para marcar active
+
+      const panel = document.getElementById('main-panel');
+      
+      // Renderiza cabeçalho comum
+      panel.innerHTML = `
+        <div class="convo-header">
+          <div class="convo-header-left">
+            <h2>${title}</h2>
+            <div class="convo-header-meta">
+              <span><strong>ID:</strong> ${id}</span>
+              <span>•</span>
+              <span><strong>Status Físico:</strong> ${status}</span>
+            </div>
+          </div>
+        </div>
+        <div class="convo-body" id="convo-body-content">
+          <div style="text-align: center; padding: 40px;"><div class="spinner"></div></div>
+        </div>
+      `;
+
+      if (status === 'Criptografado (.pb)') {
+        renderConversionFlow(id, title);
+      } else {
+        renderSQLiteConversation(id);
+      }
+    }
+
+    // Renderiza Painel de Conversão (.pb -> .db)
+    function renderConversionFlow(id, title) {
+      const container = document.getElementById('convo-body-content');
+      container.innerHTML = `
+        <div class="conversion-flow-card pulse-glow">
+          <div class="flow-title">
+            <i class="fa-solid fa-shield-halved"></i>
+            Conversão Necessária (.pb para SQLite Aberto)
+          </div>
+          <p class="flow-desc">
+            Esta conversa está salva no disco em formato criptografado <strong>.pb (Protobuf cifrado com AES-GCM)</strong>.
+            Para que possamos visualizar e injetar novos contextos nela, precisamos descriptografá-la de forma blindada em memória 
+            e remontar seu banco SQLite correspondente (.db).
+          </p>
+          
+          <div class="steps-indicator">
+            <div class="step-box active" id="step-1-box">
+              <div class="step-num">Etapa 1</div>
+              <div class="step-label">Capturar Histórico Decifrado</div>
+            </div>
+            <div class="step-box" id="step-2-box">
+              <div class="step-num">Etapa 2</div>
+              <div class="step-label">Gerar SQLite & Metadados</div>
+            </div>
+          </div>
+
+          <div id="flow-actions">
+            <button class="btn btn-primary" onclick="startPbToDb('${id}')" id="btn-start-conv">
+              <i class="fa-solid fa-download"></i> Iniciar Captura em Memória
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    // Executa o Passo 1 da Conversão
+    function startPbToDb(id) {
+      const btn = document.getElementById('btn-start-conv');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Capturando dados...';
+
+      fetch(`/api/convert/start/${id}`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            showToast(data.message, 'error');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-download"></i> Iniciar Captura em Memória';
+            return;
+          }
+
+          showToast(data.message);
+          
+          // Avança o UI para a Etapa 2
+          document.getElementById('step-1-box').className = 'step-box completed';
+          const step2 = document.getElementById('step-2-box');
+          step2.className = 'step-box active';
+          
+          const actions = document.getElementById('flow-actions');
+          actions.innerHTML = `
+            <div style="background: rgba(245, 158, 11, 0.08); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(245, 158, 11, 0.2); font-size: 0.88rem;">
+              <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-amber)"></i> 
+              <strong>Atenção:</strong> Por favor, <strong>FECHE o programa Antigravity / Gemini agora</strong> em seu computador. 
+              O botão de finalizar se tornará ativo assim que o fechamento for detectado de forma automática!
+            </div>
+            <button class="btn btn-amber" onclick="finalizePbToDb('${id}')" id="btn-finalize-conv" disabled>
+              <i class="fa-solid fa-file-export"></i> Aguardando Fechamento do Antigravity...
+            </button>
+          `;
+
+          // Inicia poller do processo
+          const poller = setInterval(() => {
+            if (!serverRunning) {
+              clearInterval(poller);
+              const btnFinalize = document.getElementById('btn-finalize-conv');
+              if (btnFinalize) {
+                btnFinalize.disabled = false;
+                btnFinalize.innerHTML = '<i class="fa-solid fa-file-shield"></i> Gravar SQLite Aberto no Disco';
+                showToast('Antigravity fechado! Você pode finalizar a conversão agora.', 'warning');
+              }
+            }
+          }, 1500);
+
+        })
+        .catch(err => {
+          showToast('Erro de requisição.', 'error');
+          btn.disabled = false;
+        });
+    }
+
+    // Executa o Passo 2 da Conversão
+    function finalizePbToDb(id) {
+      const btn = document.getElementById('btn-finalize-conv');
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Gravando base de dados SQL...';
+
+      fetch(`/api/convert/finalize/${id}`, { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            showToast(data.message, 'error');
+            btn.disabled = false;
+            return;
+          }
+
+          showToast('Conversão cirúrgica de metadados realizada com sucesso!');
+          
+          // Re-seleciona a conversa agora como SQLite
+          selectConversation(id, document.querySelector('.convo-card.active .convo-title').innerText, 'SQLite Aberto');
+        })
+        .catch(err => {
+          showToast('Erro ao finalizar.', 'error');
+          btn.disabled = false;
+        });
+    }
+
+    // Renderiza Conversa SQLite ativa e Timeline de Passos
+    function renderSQLiteConversation(id) {
+      fetch(`/api/steps/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.success) {
+            showToast(data.message, 'error');
+            return;
+          }
+
+          const container = document.getElementById('convo-body-content');
+          
+          let timelineHtml = '<div class="timeline">';
+          if (data.steps.length === 0) {
+            timelineHtml += '<div style="text-align: center; color: var(--text-muted); padding: 40px;">Essa conversa está limpa ou ainda não possui steps de mensagens.</div>';
+          } else {
+            data.steps.forEach(step => {
+              let bubbleClass = 'msg-bubble-generic';
+              let icon = 'fa-circle-nodes';
+              let typeName = 'Meta/Ação';
+              
+              if (step.type === 14) {
+                bubbleClass = 'user';
+                icon = 'fa-user';
+                typeName = 'Usuário';
+              } else if (step.type === 15) {
+                bubbleClass = 'agent';
+                icon = 'fa-robot';
+                typeName = 'Agente';
+              } else if (step.type === 21) {
+                bubbleClass = 'command';
+                icon = 'fa-terminal';
+                typeName = 'Comando';
+              }
+
+              const sizeKb = (step.size / 1024).toFixed(2);
+              const isLarge = step.size > 2000;
+              
+              // Verifica se o texto já foi ceifado para mostrar um badge especial
+              const isCeifado = step.desc.includes('CONTEUDO CEIFADO') || step.desc.includes('CONTEÚDO CEIFADO');
+
+              timelineHtml += `
+                <div class="msg-bubble ${bubbleClass} ${isCeifado ? 'ceifado-state' : ''}">
+                  <div class="msg-header-row">
+                    <span class="msg-sender">
+                      <i class="fa-solid ${icon}"></i> ${typeName}
+                    </span>
+                    <span class="msg-size-badge ${isLarge ? 'large' : ''}">
+                      ${sizeKb} KB
+                    </span>
+                  </div>
+                  <div class="msg-text">${escapeHtml(step.desc)}</div>
+                  <div class="msg-footer-row">
+                    <span class="msg-index">Step #${step.idx}</span>
+                    ${isLarge && !isCeifado ? `
+                      <button class="btn btn-ceifar" onclick="triggerCeifa('${id}', ${step.idx}, ${step.size})">
+                        <i class="fa-solid fa-scissors"></i> Ceifar
+                      </button>
+                    ` : ''}
+                    ${isCeifado ? `
+                      <span class="ceifado-badge"><i class="fa-solid fa-leaf"></i> Ceifado</span>
+                    ` : ''}
+                  </div>
+                </div>
+              `;
+            });
+          }
+          timelineHtml += '</div>';
+
+          container.innerHTML = timelineHtml;
+          
+          // Rola timeline para o final
+          container.scrollTop = container.scrollHeight;
+
+          // Adiciona painel inferior de injeção se for SQLite Aberto
+          const mainPanel = document.getElementById('main-panel');
+          
+          // Remove painel de injeção antigo se houver
+          const oldInj = document.querySelector('.injection-panel');
+          if (oldInj) oldInj.remove();
+
+          const injPanel = document.createElement('div');
+          injPanel.className = 'injection-panel';
+          injPanel.innerHTML = `
+            <div class="injection-form">
+              <div class="injection-row">
+                <div class="textarea-wrapper">
+                  <textarea id="inject-text" class="inject-textarea" placeholder="Digite uma mensagem ou contexto artificial para injetar diretamente na conversa..."></textarea>
+                </div>
+                <select id="inject-role" class="role-select">
+                  <option value="user">Como Usuário</option>
+                  <option value="assistant">Como Agente</option>
+                </select>
+                <button class="btn btn-primary" onclick="submitInjection('${id}')" id="btn-inject" style="height: 80px; width: 150px;">
+                  <i class="fa-solid fa-paper-plane"></i> Injetar
+                </button>
+              </div>
+            </div>
+          `;
+          mainPanel.appendChild(injPanel);
+        })
+        .catch(err => console.error(err));
+    }
+
+    // Helper para escapar HTML
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Gatilho para ceifar passo de conversa
+    function triggerCeifa(convoId, stepIdx, size) {
+      fetch('/api/check-processes')
+      .then(res => res.json())
+      .then(procData => {
+        if (procData.success && procData.has_active) {
+          showProcessWarningModal(procData.processes, () => {
+            executeCeifa(convoId, stepIdx);
+          }, () => {
+            fetch('/api/kill-processes', { method: 'POST' })
+            .then(res => res.json())
+            .then(killData => {
+              if (killData.success) {
+                showToast(killData.message);
+                executeCeifa(convoId, stepIdx);
+              } else {
+                showToast(killData.message, 'error');
+              }
+            });
+          }, () => {});
+        } else {
+          if (confirm(`Tem certeza que deseja ceifar o Step #${stepIdx} (${(size/1024).toFixed(2)} KB) para economizar tokens?`)) {
+            executeCeifa(convoId, stepIdx);
+          }
+        }
+      });
+    }
+
+    // Executa a ceifa real
+    function executeCeifa(convoId, stepIdx) {
+      fetch('/api/ceifar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ convo_id: convoId, step_idx: stepIdx })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (!data.success) {
+          showToast(data.message, 'error');
+          return;
+        }
+        showToast(data.message);
+        renderSQLiteConversation(convoId);
+      })
+      .catch(err => {
+        showToast('Erro ao realizar a ceifa.', 'error');
+        console.error(err);
+      });
+    }
+
+    // Exibe modal customizado de aviso de processos ativos do Antigravity
+    function showProcessWarningModal(processes, onProceed, onKillAndProceed, onCancel) {
+      const modal = document.createElement('div');
+      modal.className = 'modal-overlay';
+      
+      const processItems = processes.map(p => `
+        <div class="process-item">
+          <span><i class="fa-solid fa-microchip mr-2 text-amber-500"></i>${p.name}</span>
+          <span class="process-badge">PID: ${p.pid} (${p.memory})</span>
+        </div>
+      `).join('');
+      
+      modal.innerHTML = `
+        <div class="modal-container">
+          <div class="modal-header">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span class="modal-title">Aviso de Processos Ativos</span>
+          </div>
+          <div class="modal-body">
+            Detectamos que o <strong>Antigravity 2</strong> possui processos ativos em execução em seu sistema:
+            <div class="process-list">
+              ${processItems}
+            </div>
+            <p style="margin-top: 14px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">
+              Injetar contexto com o programa aberto fará com que as mensagens sejam ignoradas ou apagadas da memória RAM dele. 
+              O que você deseja fazer?
+            </p>
+          </div>
+          <div class="modal-footer" style="flex-wrap: wrap;">
+            <button class="btn btn-secondary" id="modal-cancel" style="padding: 8px 12px; font-size: 0.85rem;">Cancelar</button>
+            <button class="btn btn-amber" id="modal-proceed" style="padding: 8px 12px; font-size: 0.85rem;">Injetar Forçado</button>
+            <button class="btn btn-primary" id="modal-kill" style="padding: 8px 12px; font-size: 0.85rem;">Encerrar e Injetar</button>
+          </div>
+        </div>
+      `;
+      
+      document.body.appendChild(modal);
+      
+      const closeModal = () => {
+        modal.style.animation = 'fadeIn 0.2s reverse forwards';
+        setTimeout(() => modal.remove(), 200);
+      };
+      
+      document.getElementById('modal-cancel').onclick = () => {
+        closeModal();
+        onCancel();
+      };
+      
+      document.getElementById('modal-proceed').onclick = () => {
+        closeModal();
+        onProceed();
+      };
+      
+      document.getElementById('modal-kill').onclick = () => {
+        closeModal();
+        onKillAndProceed();
+      };
+    }
+
+    // Executa a requisição real de injeção na API
+    function executeInjectionPost(id, text, role, btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div> Injetando...';
+      
+      fetch(`/api/inject/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, role })
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Injetar';
+
+        if (!data.success) {
+          showToast(data.message, 'error');
+          return;
+        }
+
+        showToast(data.message);
+        document.getElementById('inject-text').value = '';
+        
+        // Recarrega a timeline para atualizar
+        renderSQLiteConversation(id);
+      })
+      .catch(err => {
+        showToast('Erro de conexão.', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Injetar';
+      });
+    }
+
+    // Submete uma Injeção de Contexto com verificação inteligente de processos
+    function submitInjection(id) {
+      const text = document.getElementById('inject-text').value.trim();
+      const role = document.getElementById('inject-role').value;
+      const btn = document.getElementById('btn-inject');
+
+      if (!text) {
+        showToast('A mensagem não pode ficar vazia!', 'error');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<div class="spinner"></div>';
+
+      // 1. Verifica se existem processos do Antigravity em execução
+      fetch('/api/check-processes')
+      .then(res => res.json())
+      .then(procData => {
+        if (procData.success && procData.has_active) {
+          // Exibe o popup interativo listando os processos
+          showProcessWarningModal(procData.processes, () => {
+            // Força a injeção direta
+            executeInjectionPost(id, text, role, btn);
+          }, () => {
+            // Encerra os processos via API e depois injeta
+            btn.innerHTML = '<div class="spinner"></div> Encerrando...';
+            fetch('/api/kill-processes', { method: 'POST' })
+            .then(res => res.json())
+            .then(killData => {
+              if (killData.success) {
+                showToast(killData.message);
+                executeInjectionPost(id, text, role, btn);
+              } else {
+                showToast(killData.message, 'error');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Injetar';
+              }
+            })
+            .catch(() => {
+              showToast('Erro ao encerrar processos.', 'error');
+              btn.disabled = false;
+              btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Injetar';
+            });
+          }, () => {
+            // Cancelado pelo usuário
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Injetar';
+          });
+        } else {
+          // Nenhum processo ativo, injeta diretamente
+          executeInjectionPost(id, text, role, btn);
+        }
+      })
+      .catch(() => {
+        // Fallback em caso de falha de conexão na verificação
+        executeInjectionPost(id, text, role, btn);
+      });
+    }
+
+    // Inicialização
+    document.addEventListener('DOMContentLoaded', () => {
+      checkSystemStatus();
+      loadConversations();
+      
+      // Monitora o status a cada 3 segundos
+      setInterval(checkSystemStatus, 3000);
+      
+      // Evento de busca em tempo real
+      document.getElementById('search-input').addEventListener('input', loadConversations);
+    });
+  </script>
+</body>
+</html>

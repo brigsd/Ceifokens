@@ -1,0 +1,139 @@
+2026-07-02 15:47:01,034 [INFO] Starting background mirror thread...
+2026-07-02 15:47:01,035 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 15:47:01,080 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 15:47:01,080 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 15:47:17,098 [INFO] 127.0.0.1 - - [02/Jul/2026 15:47:17] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 15:47:23,759 [INFO] 127.0.0.1 - - [02/Jul/2026 15:47:23] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:48:03,223 [INFO] 127.0.0.1 - - [02/Jul/2026 15:48:03] "GET / HTTP/1.1" 200 -
+2026-07-02 15:48:03,674 [INFO] 127.0.0.1 - - [02/Jul/2026 15:48:03] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 15:48:03,959 [INFO] 127.0.0.1 - - [02/Jul/2026 15:48:03] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-07-02 15:48:06,774 [INFO] 127.0.0.1 - - [02/Jul/2026 15:48:06] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:52:31,751 [INFO] Starting background mirror thread...
+2026-07-02 15:52:31,751 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 15:52:31,801 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 15:52:31,801 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 15:52:37,141 [INFO] 127.0.0.1 - - [02/Jul/2026 15:52:37] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:52:42,085 [INFO] 127.0.0.1 - - [02/Jul/2026 15:52:42] "GET / HTTP/1.1" 200 -
+2026-07-02 15:52:43,094 [INFO] 127.0.0.1 - - [02/Jul/2026 15:52:43] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 15:52:45,142 [INFO] 127.0.0.1 - - [02/Jul/2026 15:52:45] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:53:07,245 [INFO] Starting background mirror thread...
+2026-07-02 15:53:07,245 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 15:53:07,299 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 15:53:07,299 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 15:53:08,649 [INFO] 127.0.0.1 - - [02/Jul/2026 15:53:08] "GET / HTTP/1.1" 200 -
+2026-07-02 15:53:08,881 [INFO] 127.0.0.1 - - [02/Jul/2026 15:53:08] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 15:53:16,194 [INFO] 127.0.0.1 - - [02/Jul/2026 15:53:16] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:58:07,290 [INFO] Starting background mirror thread...
+2026-07-02 15:58:07,291 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 15:58:07,351 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 15:58:07,351 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 15:58:13,174 [INFO] 127.0.0.1 - - [02/Jul/2026 15:58:13] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:58:54,179 [INFO] 127.0.0.1 - - [02/Jul/2026 15:58:54] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 15:59:56,270 [INFO] Starting background mirror thread...
+2026-07-02 15:59:56,270 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 15:59:56,316 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 15:59:56,317 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 15:59:56,632 [INFO] 127.0.0.1 - - [02/Jul/2026 15:59:56] "GET / HTTP/1.1" 200 -
+2026-07-02 15:59:56,895 [INFO] 127.0.0.1 - - [02/Jul/2026 15:59:56] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:00:11,928 [INFO] 127.0.0.1 - - [02/Jul/2026 16:00:11] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:03:37,440 [INFO] Starting background mirror thread...
+2026-07-02 16:03:37,441 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:03:37,494 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:03:37,495 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:03:37,673 [INFO] 127.0.0.1 - - [02/Jul/2026 16:03:37] "GET / HTTP/1.1" 200 -
+2026-07-02 16:03:37,941 [INFO] 127.0.0.1 - - [02/Jul/2026 16:03:37] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:03:41,461 [INFO] 127.0.0.1 - - [02/Jul/2026 16:03:41] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:13:45,836 [INFO] Starting background mirror thread...
+2026-07-02 16:13:45,837 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:13:45,878 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:13:45,878 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:13:46,661 [INFO] 127.0.0.1 - - [02/Jul/2026 16:13:46] "GET / HTTP/1.1" 200 -
+2026-07-02 16:13:46,907 [INFO] 127.0.0.1 - - [02/Jul/2026 16:13:46] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:13:48,492 [INFO] 127.0.0.1 - - [02/Jul/2026 16:13:48] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:15:01,435 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:01] "GET / HTTP/1.1" 200 -
+2026-07-02 16:15:02,257 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:02] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:15:05,389 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:05] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:15:20,827 [INFO] Starting background mirror thread...
+2026-07-02 16:15:20,827 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:15:20,838 [INFO] Starting background mirror thread...
+2026-07-02 16:15:20,839 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:15:20,865 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:15:20,866 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:15:20,883 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:15:20,883 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:15:21,718 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:21] "GET / HTTP/1.1" 200 -
+2026-07-02 16:15:21,729 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:21] "GET / HTTP/1.1" 200 -
+2026-07-02 16:15:21,829 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:21] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:15:21,982 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:21] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:15:23,569 [INFO] 127.0.0.1 - - [02/Jul/2026 16:15:23] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:16:24,006 [INFO] 127.0.0.1 - - [02/Jul/2026 16:16:24] "GET / HTTP/1.1" 200 -
+2026-07-02 16:16:24,923 [INFO] 127.0.0.1 - - [02/Jul/2026 16:16:24] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:16:33,270 [INFO] 127.0.0.1 - - [02/Jul/2026 16:16:33] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:24:43,153 [INFO] 127.0.0.1 - - [02/Jul/2026 16:24:43] "GET /api/conversation/ae99f62c-0854-4543-80c0-bf6ccd979b81 HTTP/1.1" 200 -
+2026-07-02 16:36:14,529 [INFO] 127.0.0.1 - - [02/Jul/2026 16:36:14] "GET / HTTP/1.1" 200 -
+2026-07-02 16:36:14,815 [INFO] 127.0.0.1 - - [02/Jul/2026 16:36:14] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:44:05,962 [INFO] Starting background mirror thread...
+2026-07-02 16:44:05,962 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:44:06,004 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:44:06,007 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:44:06,659 [INFO] 127.0.0.1 - - [02/Jul/2026 16:44:06] "GET / HTTP/1.1" 200 -
+2026-07-02 16:44:06,753 [INFO] 127.0.0.1 - - [02/Jul/2026 16:44:06] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:44:10,031 [INFO] 127.0.0.1 - - [02/Jul/2026 16:44:10] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:44:44,048 [INFO] 127.0.0.1 - - [02/Jul/2026 16:44:44] "GET / HTTP/1.1" 200 -
+2026-07-02 16:44:44,106 [INFO] 127.0.0.1 - - [02/Jul/2026 16:44:44] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:44:52,505 [INFO] 127.0.0.1 - - [02/Jul/2026 16:44:52] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:45:06,014 [INFO] 127.0.0.1 - - [02/Jul/2026 16:45:06] "GET / HTTP/1.1" 200 -
+2026-07-02 16:45:06,072 [INFO] 127.0.0.1 - - [02/Jul/2026 16:45:06] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:45:08,940 [INFO] 127.0.0.1 - - [02/Jul/2026 16:45:08] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:45:15,575 [INFO] 127.0.0.1 - - [02/Jul/2026 16:45:15] "GET / HTTP/1.1" 200 -
+2026-07-02 16:45:15,634 [INFO] 127.0.0.1 - - [02/Jul/2026 16:45:15] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:45:42,783 [INFO] 127.0.0.1 - - [02/Jul/2026 16:45:42] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:47:03,514 [INFO] 127.0.0.1 - - [02/Jul/2026 16:47:03] "GET / HTTP/1.1" 200 -
+2026-07-02 16:47:03,599 [INFO] 127.0.0.1 - - [02/Jul/2026 16:47:03] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:47:05,008 [INFO] 127.0.0.1 - - [02/Jul/2026 16:47:05] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:47:15,905 [INFO] Starting background mirror thread...
+2026-07-02 16:47:15,906 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:47:15,958 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:47:15,959 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:47:16,627 [INFO] 127.0.0.1 - - [02/Jul/2026 16:47:16] "GET / HTTP/1.1" 200 -
+2026-07-02 16:47:16,721 [INFO] 127.0.0.1 - - [02/Jul/2026 16:47:16] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:47:19,841 [INFO] 127.0.0.1 - - [02/Jul/2026 16:47:19] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:50:21,786 [INFO] Starting background mirror thread...
+2026-07-02 16:50:21,786 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:50:21,833 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:50:21,834 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:50:22,609 [INFO] 127.0.0.1 - - [02/Jul/2026 16:50:22] "GET / HTTP/1.1" 200 -
+2026-07-02 16:50:22,904 [INFO] 127.0.0.1 - - [02/Jul/2026 16:50:22] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:50:30,600 [INFO] 127.0.0.1 - - [02/Jul/2026 16:50:30] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:51:56,685 [INFO] Starting background mirror thread...
+2026-07-02 16:51:56,686 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:51:56,730 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:51:56,730 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:51:57,653 [INFO] 127.0.0.1 - - [02/Jul/2026 16:51:57] "GET / HTTP/1.1" 200 -
+2026-07-02 16:51:57,736 [INFO] 127.0.0.1 - - [02/Jul/2026 16:51:57] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:52:01,914 [INFO] 127.0.0.1 - - [02/Jul/2026 16:52:01] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:52:40,085 [INFO] 127.0.0.1 - - [02/Jul/2026 16:52:40] "GET /api/conversation/e52d3ed1-9325-4158-85bd-856e75476122 HTTP/1.1" 200 -
+2026-07-02 16:52:44,145 [INFO] 127.0.0.1 - - [02/Jul/2026 16:52:44] "GET /api/conversation/bcba6f50-c477-4297-8304-b6e7ca46cce8 HTTP/1.1" 200 -
+2026-07-02 16:55:28,154 [INFO] Starting background mirror thread...
+2026-07-02 16:55:28,154 [INFO] Starting Web Sanitizer UI Server on http://127.0.0.1:8000
+2026-07-02 16:55:28,200 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:8000
+2026-07-02 16:55:28,201 [INFO] [33mPress CTRL+C to quit[0m
+2026-07-02 16:55:28,700 [INFO] 127.0.0.1 - - [02/Jul/2026 16:55:28] "GET / HTTP/1.1" 200 -
+2026-07-02 16:55:28,974 [INFO] 127.0.0.1 - - [02/Jul/2026 16:55:28] "GET /api/conversations HTTP/1.1" 200 -
+2026-07-02 16:55:32,690 [INFO] 127.0.0.1 - - [02/Jul/2026 16:55:32] "GET /api/conversation/11361722-1724-4e34-a30f-85f40ffd3eb6 HTTP/1.1" 200 -
+2026-07-02 16:57:27,284 [INFO] 127.0.0.1 - - [02/Jul/2026 16:57:27] "GET / HTTP/1.1" 200 -
+2026-07-02 16:57:27,377 [INFO] 127.0.0.1 - - [02/Jul/2026 16:57:27] "GET /api/conversations HTTP/1.1" 200 -

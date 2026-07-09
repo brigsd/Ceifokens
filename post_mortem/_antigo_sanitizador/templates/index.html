@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity Sanitizer — Editor Mestre</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Modern Reset and Design System Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0d0f1a 0%, #15182e 100%);
+            --glass-bg: rgba(21, 24, 46, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.06);
+            --active-bg: rgba(255, 255, 255, 0.08);
+            
+            --primary: #5c62f5;
+            --primary-glow: rgba(92, 98, 245, 0.4);
+            --secondary: #9962f5;
+            --accent-green: #10b981;
+            --accent-green-glow: rgba(16, 185, 129, 0.3);
+            --accent-red: #ef4444;
+            --accent-orange: #f59e0b;
+            
+            --text-main: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-dark: #6b7280;
+            
+            --font-outfit: 'Outfit', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+            
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Premium Glowing Scrollbars */
+        ::-webkit-scrollbar {
+            width: 16px;
+            height: 16px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 11, 22, 0.95);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffffff; /* Barra branca sólida e bem visível */
+            border-radius: 8px;
+            border: 4px solid rgba(10, 11, 22, 0.95); /* Margem interna para criar efeito de pílula flutuante */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e5e7eb;
+        }
+
+        /* Topbar Header styling */
+        header {
+            flex-shrink: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-glowing {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            box-shadow: 0 0 15px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-outfit);
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .brand-title {
+            font-family: var(--font-outfit);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #ffffff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent-green);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 12px var(--accent-green); }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        .global-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Buttons Styling */
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #6c71f7 0%, #a471f7 100%);
+            box-shadow: 0 6px 20px rgba(92, 98, 245, 0.6);
+            transform: translateY(-1.5px);
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* Main Workspace Container */
+        .workspace {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            position: relative;
+        }
+
+        /* Sidebar conversations styling */
+        .sidebar {
+            width: 320px;
+            background: rgba(14, 16, 32, 0.8);
+            border-right: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .search-box {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .convo-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .convo-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .convo-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .convo-item.active {
+            background: var(--active-bg);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 4px 0 0 var(--primary);
+        }
+
+        .convo-name {
+            font-family: var(--font-outfit);
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .convo-id {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            letter-spacing: -0.2px;
+        }
+
+        .convo-item.active .convo-id {
+            color: var(--text-secondary);
+        }
+
+        /* Editor Area styling */
+        .editor-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(10, 11, 22, 0.4);
+            padding: 1.5rem 0rem 1.5rem 1.5rem; /* No padding on the right edge */
+            position: relative;
+            overflow: hidden; /* Prevent container scrolling */
+            min-height: 0; /* Enable flex shrink */
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-right: 1.5rem; /* Keep header contents padded */
+        }
+
+        .editor-title-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .editor-title {
+            font-family: var(--font-outfit);
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .editor-subtitle {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .editor-body {
+            flex: 1;
+            min-height: 0; /* Enable flex shrink */
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            border-right: none; /* Touches absolute right */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .virtual-editor-body {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Virtual Card Styles */
+        .step-card {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 900px;
+            height: 240px; /* CARD_HEIGHT */
+            padding: 1rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(14, 16, 32, 0.6);
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 30px;
+            flex-shrink: 0;
+        }
+
+        .step-card-badge {
+            font-family: var(--font-outfit);
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-user {
+            background: rgba(92, 98, 245, 0.15);
+            border: 1px solid rgba(92, 98, 245, 0.3);
+            color: #a5b4fc;
+        }
+
+        .badge-model {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+
+        .badge-system {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fde68a;
+        }
+
+        .btn-delete-card {
+            background: transparent;
+            border: none;
+            color: var(--text-dark);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        .btn-delete-card:hover {
+            color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .step-card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .step-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .step-section-label {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .step-section-textarea {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: #e5e7eb;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            padding: 10px 12px;
+            resize: none;
+            outline: none;
+            overflow-y: auto;
+            transition: var(--transition-smooth);
+        }
+
+        /* Dedicated fine scrollbars for message textareas */
+        .step-section-textarea::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .step-section-textarea::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+        .step-section-textarea::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 4px;
+            border: none;
+            box-shadow: none;
+        }
+        .step-section-textarea::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .step-section-textarea:focus {
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        .step-card-footer {
+            display: flex;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            height: 20px;
+            flex-shrink: 0;
+            border-top: 1px dashed rgba(255, 255, 255, 0.03);
+            padding-top: 6px;
+        }
+
+        .editor-footer {
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid var(--glass-border);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Empty/Landing view styling */
+        .landing-view {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            text-align: center;
+            background: rgba(10, 11, 22, 0.2);
+        }
+
+        .landing-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--text-secondary);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .landing-title {
+            font-family: var(--font-outfit);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .landing-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        /* Interactive Notification Toast styling */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(17, 24, 39, 0.9);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+            transform: translateY(150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
+
+        .toast-icon {
+            font-size: 1.2rem;
+        }
+
+        .toast-content {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .toast-success {
+            border-color: rgba(16, 185, 129, 0.3);
+            color: #a7f3d0;
+        }
+        .toast-success .toast-icon { color: var(--accent-green); }
+
+        .toast-error {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #fecaca;
+        }
+        .toast-error .toast-icon { color: var(--accent-red); }
+
+        .toast-loading {
+            border-color: rgba(92, 98, 245, 0.3);
+            color: #c7d2fe;
+        }
+        .toast-loading .toast-icon {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            color: var(--primary);
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Glass Dialog Modal style */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .dialog-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .dialog-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            width: 450px;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            transform: scale(0.9);
+            transition: var(--transition-smooth);
+        }
+
+        .dialog-overlay.show .dialog-box {
+            transform: scale(1);
+        }
+
+        .dialog-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dialog-icon {
+            font-size: 1.5rem;
+        }
+
+        .dialog-title {
+            font-family: var(--font-outfit);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .dialog-message {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .dialog-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Topbar Header -->
+    <header>
+        <div class="brand-container">
+            <div class="logo-glowing">AG</div>
+            <div class="brand-title">Antigravity Sanitizer</div>
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                ESPELHAMENTO ATIVO
+            </div>
+        </div>
+
+        <div class="global-actions">
+            <button class="btn btn-danger" onclick="showConfirmUndo()">
+                <!-- Undo SVG / Icon placeholder -->
+                <span>↩</span> Desfazer Último
+            </button>
+            <button class="btn btn-primary" onclick="showConfirmSync()">
+                <span>⚡</span> SALVAR GERAL (APLICAR ORIGINAL)
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <div class="workspace">
+        
+        <!-- Vertical Sidebar -->
+        <div class="sidebar">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchBar" placeholder="Procurar conversa..." oninput="filterConversations()">
+            </div>
+            <div class="convo-list" id="convoList">
+                <!-- Loaded dynamically -->
+                <div style="padding: 2rem; text-align: center; color: var(--text-dark);">
+                    Buscando conversas...
+                </div>
+            </div>
+        </div>
+
+        <!-- Master Editor Panel / Landing View -->
+        <div class="editor-container" id="editorContainer">
+            <div class="landing-view" id="landingView">
+                <div class="landing-icon">✍</div>
+                <div class="landing-title">Selecione uma Conversa</div>
+                <div class="landing-desc">
+                    Escolha uma conversa na barra lateral para carregar seu histórico de contexto completo. Você poderá saneá-la, apagando raciocínios ou prompts inteiros livremente.
+                </div>
+            </div>
+
+            <!-- The Real Editor Frame (Hidden initially) -->
+            <div style="display: none; flex: 1; flex-direction: column; min-height: 0;" id="editorFrame">
+                <div class="editor-header">
+                    <div class="editor-title-container">
+                        <div class="editor-title" id="activeConvoTitle">Desenvolvimento EPLAN</div>
+                        <div class="editor-subtitle" id="activeConvoId">ae99f62c-0854-4543-80c0-bf6ccd979b81</div>
+                    </div>
+                    <div class="editor-actions">
+                        <button class="btn" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: #a7f3d0;" onclick="saveMirror()">
+                            <span>💾</span> Salvar no Espelho
+                        </button>
+                    </div>
+                </div>
+
+                <div class="editor-body">
+                    <div id="virtualEditorBody" class="virtual-editor-body" onscroll="onEditorScroll()">
+                        <div id="virtualScrollContainer" style="position: relative; width: 100%;">
+                            <!-- Cards render absolutely here -->
+                        </div>
+                    </div>
+                    <div class="editor-footer">
+                        <span id="messageCount">Mensagens: 0</span>
+                        <span>Modo de Edição Virtualizada — DOM Recycling</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast">
+        <span class="toast-icon" id="toastIcon">✓</span>
+        <span class="toast-content" id="toastText">Operação concluída com sucesso!</span>
+    </div>
+
+    <!-- Glass Dialog Modal -->
+    <div class="dialog-overlay" id="dialogOverlay">
+        <div class="dialog-box">
+            <div class="dialog-header">
+                <span class="dialog-icon" id="dialogIcon">⚠️</span>
+                <span class="dialog-title" id="dialogTitle">Aviso Crítico</span>
+            </div>
+            <div class="dialog-message" id="dialogMessage">
+                Você tem certeza de que deseja realizar essa operação?
+            </div>
+            <div class="dialog-buttons">
+                <button class="btn" onclick="closeDialog()">Cancelar</button>
+                <button class="btn btn-primary" id="dialogConfirmBtn" onclick="confirmDialog()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allConversations = [];
+        let activeConvoId = null;
+        let currentDialogAction = null;
+
+        // Fetch conversations list on startup
+        async function fetchConversations() {
+            try {
+                const response = await fetch("/api/conversations");
+                const data = await response.json();
+                if (data.success) {
+                    allConversations = data.conversations;
+                    renderConversations(allConversations);
+                }
+            } catch (error) {
+                showToast("Erro carregando a lista de conversas.", "error");
+            }
+        }
+
+        function renderConversations(list) {
+            const container = document.getElementById("convoList");
+            if (list.length === 0) {
+                container.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--text-dark);">Nenhuma conversa encontrada.</div>';
+                return;
+            }
+            
+            container.innerHTML = list.map(convo => `
+                <div class="convo-item ${activeConvoId === convo.id ? 'active' : ''}" onclick="selectConversation('${convo.id}', '${escapeHtml(convo.name)}')">
+                    <div class="convo-name">${escapeHtml(convo.name)}</div>
+                    <div class="convo-id">${convo.id}</div>
+                </div>
+            `).join("");
+        }
+
+        // Filtering search logic
+        function filterConversations() {
+            const query = document.getElementById("searchBar").value.toLowerCase();
+            const filtered = allConversations.filter(convo => 
+                convo.name.toLowerCase().includes(query) || convo.id.toLowerCase().includes(query)
+            );
+            renderConversations(filtered);
+        }
+
+        let conversationSteps = [];
+        const CARD_HEIGHT = 240;
+        const BUFFER_COUNT = 3;
+        let lastStartIndex = -1;
+        let lastEndIndex = -1;
+
+        // Select a conversation and load JSON logs
+        async function selectConversation(id, name) {
+            activeConvoId = id;
+            
+            // Highlight sidebar item
+            const items = document.querySelectorAll(".convo-item");
+            items.forEach(item => {
+                const itemConvoId = item.querySelector(".convo-id").textContent;
+                if (itemConvoId === id) {
+                    item.classList.add("active");
+                } else {
+                    item.classList.remove("active");
+                }
+            });
+
+            // Transition UI views
+            document.getElementById("landingView").style.display = "none";
+            document.getElementById("editorFrame").style.display = "flex";
+            
+            document.getElementById("activeConvoTitle").textContent = name;
+            document.getElementById("activeConvoId").textContent = id;
+            
+            const container = document.getElementById("virtualScrollContainer");
+            container.innerHTML = '<div style="padding: 4rem; text-align: center; color: var(--text-secondary);">Buscando histórico do espelho...</div>';
+            container.style.height = "0px";
+            
+            showToast("Carregando histórico...", "loading");
+
+            try {
+                const response = await fetch(`/api/conversation/${id}`);
+                const data = await response.json();
+                if (data.success) {
+                    conversationSteps = data.steps || [];
+                    
+                    // Reset scroll position
+                    const body = document.getElementById("virtualEditorBody");
+                    body.scrollTop = 0;
+                    
+                    // Force complete redraw
+                    lastStartIndex = -1;
+                    lastEndIndex = -1;
+                    
+                    onEditorScroll();
+                    updateFooterCount();
+                    
+                    showToast("Histórico carregado com sucesso!", "success");
+                } else {
+                    conversationSteps = [];
+                    container.innerHTML = `<div style="padding: 4rem; text-align: center; color: var(--accent-red);">${escapeHtml(data.message)}</div>`;
+                    updateFooterCount();
+                    showToast(data.message || "Erro lendo dados da conversa.", "error");
+                }
+            } catch (error) {
+                conversationSteps = [];
+                container.innerHTML = '<div style="padding: 4rem; text-align: center; color: var(--accent-red);">Erro ao comunicar com o servidor.</div>';
+                updateFooterCount();
+                showToast("Erro de comunicação com o servidor.", "error");
+            }
+        }
+
+        // Virtual scroll onscroll handler
+        function onEditorScroll() {
+            const body = document.getElementById("virtualEditorBody");
+            if (!body) return;
+            const scrollTop = body.scrollTop;
+            const clientHeight = body.clientHeight;
+
+            let startIndex = Math.max(0, Math.floor(scrollTop / CARD_HEIGHT) - BUFFER_COUNT);
+            let endIndex = Math.min(conversationSteps.length - 1, Math.ceil((scrollTop + clientHeight) / CARD_HEIGHT) + BUFFER_COUNT);
+
+            // Re-render ONLY if the visible card range shifted
+            if (startIndex !== lastStartIndex || endIndex !== lastEndIndex) {
+                renderVirtualList(startIndex, endIndex);
+            }
+        }
+
+        // Virtual List Rendering Engine
+        function renderVirtualList(startIndex, endIndex) {
+            lastStartIndex = startIndex;
+            lastEndIndex = endIndex;
+
+            const container = document.getElementById("virtualScrollContainer");
+            const totalSteps = conversationSteps.length;
+
+            // Set the scroll wrapper absolute height
+            container.style.height = (totalSteps * CARD_HEIGHT) + "px";
+
+            // Clear old child nodes
+            container.innerHTML = "";
+
+            if (totalSteps === 0) {
+                container.innerHTML = '<div style="padding: 4rem; text-align: center; color: var(--text-dark);">Esta conversa está vazia ou sem mensagens.</div>';
+                return;
+            }
+
+            // Create cards for current viewport
+            for (let i = startIndex; i <= endIndex; i++) {
+                const step = conversationSteps[i];
+                if (!step) continue;
+
+                const source = step.source || "SISTEMA";
+                let senderLabel = "SISTEMA";
+                let badgeClass = "badge-system";
+                if (source === "MODEL") {
+                    senderLabel = "ANTIGRAVITY (ASSISTENTE)";
+                    badgeClass = "badge-model";
+                } else if (["USER_EXPLICIT", "USER_INPUT", "USER"].includes(source)) {
+                    senderLabel = "USUÁRIO";
+                    badgeClass = "badge-user";
+                }
+
+                const cardTop = i * CARD_HEIGHT;
+
+                // Build Card Container
+                const card = document.createElement("div");
+                card.className = "step-card";
+                card.style.top = cardTop + "px";
+
+                // Generate textareas
+                const hasThinking = "thinking" in step;
+                const thinkingVal = step.thinking || "";
+                const contentVal = step.content || "";
+
+                let bodyHtml = "";
+                if (hasThinking) {
+                    bodyHtml = `
+                        <div class="step-section">
+                            <span class="step-section-label">🧠 THINKING</span>
+                            <textarea class="step-section-textarea" oninput="updateStepValue(${i}, 'thinking', this.value)" spellcheck="false" placeholder="Raciocínio...">${escapeHtml(thinkingVal)}</textarea>
+                        </div>
+                        <div class="step-section">
+                            <span class="step-section-label">💬 CONTENT</span>
+                            <textarea class="step-section-textarea" oninput="updateStepValue(${i}, 'content', this.value)" spellcheck="false" placeholder="Conteúdo...">${escapeHtml(contentVal)}</textarea>
+                        </div>
+                    `;
+                } else {
+                    bodyHtml = `
+                        <div class="step-section">
+                            <span class="step-section-label">💬 CONTENT</span>
+                            <textarea class="step-section-textarea" oninput="updateStepValue(${i}, 'content', this.value)" spellcheck="false" placeholder="Conteúdo...">${escapeHtml(contentVal)}</textarea>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="step-card-header">
+                        <div class="step-card-badge ${badgeClass}">
+                            <span>🟩🟩</span>
+                            <span>[INÍCIO MENSAGEM | INDEX: ${i} | ${senderLabel} | TIPO: ${step.type || ''}]</span>
+                        </div>
+                        <button class="btn-delete-card" onclick="deleteStep(${i})" title="Excluir Mensagem">🗑️</button>
+                    </div>
+                    <div class="step-card-body">
+                        ${bodyHtml}
+                    </div>
+                    <div class="step-card-footer">
+                        <span>🟥🟥 [FIM MENSAGEM | INDEX: ${i}]</span>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            }
+        }
+
+        // Live synchronizer in-memory mutation
+        function updateStepValue(index, field, value) {
+            if (conversationSteps[index]) {
+                conversationSteps[index][field] = value;
+            }
+        }
+
+        // Delete Step with Dialog Confirmation
+        function deleteStep(index) {
+            showDialog(
+                "Excluir Mensagem?",
+                `Você tem certeza de que deseja excluir permanentemente a mensagem de INDEX ${index}?`,
+                () => {
+                    conversationSteps.splice(index, 1);
+                    // Force complete redraw
+                    lastStartIndex = -1;
+                    lastEndIndex = -1;
+                    
+                    const body = document.getElementById("virtualEditorBody");
+                    const totalSteps = conversationSteps.length;
+                    document.getElementById("virtualScrollContainer").style.height = (totalSteps * CARD_HEIGHT) + "px";
+                    
+                    onEditorScroll();
+                    updateFooterCount();
+                    showToast("Mensagem excluída da memória!", "success");
+                },
+                "🗑️"
+            );
+        }
+
+        // Helper to update counter in footer
+        function updateFooterCount() {
+            const countSpan = document.getElementById("messageCount");
+            if (countSpan) {
+                countSpan.textContent = `Mensagens: ${conversationSteps.length}`;
+            }
+        }
+
+        // Save current steps list to Mirror
+        async function saveMirror() {
+            if (!activeConvoId) return;
+            
+            showToast("Gravando no espelho...", "loading");
+            
+            try {
+                const response = await fetch(`/api/conversation/${activeConvoId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ steps: conversationSteps })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("Edição salva no espelho!", "success");
+                } else {
+                    showToast(data.message, "error");
+                }
+            } catch (error) {
+                showToast("Erro gravando dados no servidor.", "error");
+            }
+        }
+
+        // Show Dialog helper
+        function showDialog(title, message, action, icon = "⚠️") {
+            document.getElementById("dialogTitle").textContent = title;
+            document.getElementById("dialogMessage").textContent = message;
+            document.getElementById("dialogIcon").textContent = icon;
+            currentDialogAction = action;
+            document.getElementById("dialogOverlay").classList.add("show");
+        }
+
+        function closeDialog() {
+            document.getElementById("dialogOverlay").classList.remove("show");
+            currentDialogAction = null;
+        }
+
+        function confirmDialog() {
+            if (currentDialogAction) currentDialogAction();
+            closeDialog();
+        }
+
+        // Sync Dialog Confirmation
+        function showConfirmSync() {
+            showDialog(
+                "Sincronizar no Original?", 
+                "Atenção: Isso fechará o histórico original e aplicará o espelho por cima. Certifique-se de fechar o Antigravity antes de continuar. Um backup retroativo de segurança automático será criado.",
+                executeSync,
+                "⚡"
+            );
+        }
+
+        async function executeSync() {
+            showToast("Iniciando sincronização geral...", "loading");
+            try {
+                const response = await fetch("/api/sync", { method: "POST" });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("Sincronização aplicada com sucesso!", "success");
+                    // Refresh conversations sidebar list
+                    fetchConversations();
+                } else {
+                    showToast(data.message, "error");
+                    // Show a warning alert with the full message returned
+                    setTimeout(() => {
+                        alert("ERRO DE CONEXÃO / REJEIÇÃO:\n\n" + data.message);
+                    }, 500);
+                }
+            } catch (error) {
+                showToast("Erro ao requisitar sincronização segura.", "error");
+            }
+        }
+
+        // Undo Dialog Confirmation
+        function showConfirmUndo() {
+            showDialog(
+                "Desfazer Última Sincronização?",
+                "Isso reverterá as alterações e restaurará a pasta original 'brain', 'conversations' e os nomes ('agyhub_summaries_proto.pb') ao estado de backup mais recente criado.",
+                executeUndo,
+                "↩"
+            );
+        }
+
+        async function executeUndo() {
+            showToast("Restaurando backup anterior...", "loading");
+            try {
+                const response = await fetch("/api/undo", { method: "POST" });
+                const data = await response.json();
+                if (data.success) {
+                    showToast("Restauração concluída!", "success");
+                    fetchConversations();
+                } else {
+                    showToast(data.message, "error");
+                }
+            } catch (error) {
+                showToast("Erro ao requisitar restauração de backup.", "error");
+            }
+        }
+
+        // Toast Notification System
+        let toastTimeout = null;
+        function showToast(text, type = "success") {
+            const toast = document.getElementById("toast");
+            const icon = document.getElementById("toastIcon");
+            const content = document.getElementById("toastText");
+            
+            toast.className = "toast show";
+            
+            if (type === "success") {
+                toast.classList.add("toast-success");
+                icon.textContent = "✓";
+            } else if (type === "error") {
+                toast.classList.add("toast-error");
+                icon.textContent = "✕";
+            } else if (type === "loading") {
+                toast.classList.add("toast-loading");
+                icon.textContent = "↻";
+            }
+            
+            content.textContent = text;
+            
+            clearTimeout(toastTimeout);
+            if (type !== "loading") {
+                toastTimeout = setTimeout(() => {
+                    toast.className = "toast";
+                }, 4000);
+            }
+        }
+
+        // Helper string sanitization
+        function escapeHtml(string) {
+            return String(string).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Boot
+        fetchConversations();
+    </script>
+</body>
+</html>
