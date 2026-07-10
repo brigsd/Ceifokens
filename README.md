@@ -1,5 +1,15 @@
 # Ceifokens
 
+> **NOTA DE MIGRACAO (2026-07):** a parte viva deste projeto (colheita via API
+> local + busca semantica RAG) foi absorvida pelo
+> [moonwalk-autodraft](https://github.com/brigsd/moonwalk-autodraft), onde segue
+> mantida e exposta via MCP (`colher.py`, `semantic.py`, `src/ag_client.py`,
+> `src/harvest.py`). Este repositorio permanece como registro historico e
+> post-mortem: a linha de sanitizacao/injecao fria de historico foi encerrada
+> apos os testes documentados em [post_mortem.md](post_mortem.md) (causa raiz:
+> a nuvem é a fonte unica da verdade e sobrescreve edicoes locais). O codigo
+> aqui nao recebera mais manutencao.
+
 Colheita de conversas do Antigravity para uma base de conhecimento (RAG).
 
 Lê as conversas direto do servidor local do Antigravity e exporta cada uma como
